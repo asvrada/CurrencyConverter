@@ -8,6 +8,7 @@ module.exports = {
     entry: path.resolve(ROOT_PATH, './src/js/main.js'),
     output: {
         path: DIST_PATH,
+        publicPath: '/dist/',
         filename: 'app.bundle.js'
     },
     resolve: {
