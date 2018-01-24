@@ -1,6 +1,3 @@
-body {
-  background: #eeeeee;
-}
 
 #tableView {
   line-height: 2;
@@ -29,15 +26,5 @@ body {
 
   .top {
     background: #ffcdd2;
-  }
-
-  .editing {
-    .table-input {
-      display: block;
-    }
-
-    .table-amount {
-      display: none;
-    }
   }
 }

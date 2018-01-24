@@ -15,84 +15,16 @@
 <body>
 
 <div id="app">
-    <div class="navbar-fixed">
-        <nav>
-            <div class="nav-wrapper">
-                <span class="brand-logo truncate">Currency Converter</span>
-            </div>
-        </nav>
-    </div>
-
-    <div class="container">
-        <div id="tableView" class="">
-            <div class="table-row card row"
-                 :class="{top: data.cache.abbrNation == topRowAbbr, editing: isEditing && data.cache.abbrNation === editing}"
-                 v-for="data in dataRows" :key="data.cache.abbrNation">
-
-                <!--Left Part-->
-                <div class="table-cell-left col"
-                     :class="{s11: modeEdit, s12: !modeEdit}">
-                    <!--Row 1-->
-                    <!--Image and Abbr. of Currency-->
-                    <div class="table-cell-name col s4" @click="changeTopRow(data.cache.abbrNation)">
-                        <img class="imgNation" v-bind:src="data.cache.imgNation" alt="">
-                        <span class="abbrNation">{{ data.cache.abbrNation }}</span>
-                    </div>
-                    <!--Amount and Input-->
-                    <div class="table-cell-number col s8"
-                         @click="editRow(data.cache.abbrNation, $event)">
-                        <div class="col s12">
-                            <span class="table-amount col s12 right-align">{{ data.amount }}</span>
-                            <input class="table-input col s12 right-align" type="number"
-                                   v-bind:id="'input-' + data.cache.abbrNation"
-                                   v-model="editingAmount"
-                                   v-input-focus="editing == data.cache.abbrNation"
-                                   @blur="onBlur(data.cache.abbrNation)"
-                                   @keyup.enter="doneEdit(data.cache.abbrNation)">
-                        </div>
-                    </div>
-                    <!--Row 2-->
-                    <div class="col s12">
-                        <span class="table-money-unit col s12 right-align">{{ data.cache.moneyUnit }}</span>
-                    </div>
-                </div>
-
-                <!--Right Part-->
-                <div class="table-cell-right col s1"
-                     v-show="modeEdit"
-                     @click="btnRemove(data.cache.abbrNation)">
-                    <a href="#">X</a>
-                </div>
-            </div>
-
-            <div class="table-row row" v-show="modeEdit">
-                <div class="col s8">
-                    <v-select multiple :value.sync="selections" :options="dataSelection">
-                    </v-select>
-                </div>
-                <div class="col s2">
-                    <button class="waves-effect waves-light btn" @click="toggleEditMode()">Done</button>
-                </div>
-            </div>
-
-            <div id="padding" class="row" style="height: 70px"></div>
-        </div>
-    </div>
-
-    <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red" @click="toggleEditMode()">
-            <i class="large material-icons">edit</i>
-        </a>
-    </div>
+    <app></app>
 </div>
+
+<script src="dist/app.bundle.js"></script>
 
 <!-- jQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <!--Materialize-->
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-
-<script src="dist/app.bundle.js"></script>
 
 </body>
 </html>

@@ -1,8 +1,8 @@
-const path = require('path')
-var webpack = require('webpack')
+const path = require('path');
+var webpack = require('webpack');
 
-const ROOT_PATH = path.resolve(__dirname)
-const DIST_PATH = path.resolve(ROOT_PATH, './dist')
+const ROOT_PATH = path.resolve(__dirname);
+const DIST_PATH = path.resolve(ROOT_PATH, './dist');
 
 module.exports = {
     entry: path.resolve(ROOT_PATH, './src/js/main.js'),
@@ -12,12 +12,20 @@ module.exports = {
         filename: 'app.bundle.js'
     },
     resolve: {
+        // require时省略的扩展名，如：require('module') 不需要module.js
+        extensions: ['.js', '.vue'],
         alias: {
-            'vue$': 'vue/dist/vue.esm.js'
+            components: path.join(ROOT_PATH, './src/js/components'),
+            'vue$': 'vue/dist/vue.esm.js',
+            sass: path.join(ROOT_PATH, './src/sass'),
         }
     },
     module: {
         rules: [
+            {
+                test: /\.vue$/,
+                use: 'vue-loader'
+            },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
@@ -31,10 +39,10 @@ module.exports = {
             }
         ]
     }
-}
+};
 
 if (process.env.NODE_ENV === 'production') {
-    module.exports.devtool = '#source-map'
+    module.exports.devtool = '#source-map';
     // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
@@ -51,5 +59,5 @@ if (process.env.NODE_ENV === 'production') {
         new webpack.LoaderOptionsPlugin({
             minimize: true
         })
-    ])
+    ]);
 }
