@@ -2,7 +2,8 @@
     <div id="app">
         <banner></banner>
         <list></list>
-        <!--<edit-button></edit-button>-->
+        <edit-button></edit-button>
+        <add-new></add-new>
     </div>
 </template>
 
@@ -10,9 +11,10 @@
     import Banner from 'components/banner';
     import List from 'components/list';
     import EditButton from 'components/edit-button';
+    import AddNew from 'components/add-new';
 
     export default {
-        components: {Banner, List, EditButton},
+        components: {Banner, List, EditButton, AddNew},
         name: "app"
     };
 </script>
