@@ -10,7 +10,7 @@ const store = new Vuex.Store({
         STORAGE_KEY: 'jeff-currency-converter',
 
         // 是否进入了编辑模式（可以增删货币
-        isAppModeEdit: true,
+        isAppModeEdit: false,
         selections: [],
 
         // 当前正在编辑的国家的abbr
@@ -245,6 +245,9 @@ const store = new Vuex.Store({
 
             // 如果不同
             state.abbrInputEditing = abbr;
+        },
+        toggleAppModeEditing(state) {
+            state.isAppModeEdit = !state.isAppModeEdit;
         },
         deleteAbbr({listAbbr, baseCurrency, table}, {abbr}) {
             // 删除某一行，但保持所有数值不变

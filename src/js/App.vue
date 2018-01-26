@@ -4,6 +4,7 @@
         <list></list>
         <edit-button></edit-button>
         <add-new></add-new>
+        <div id="padding" class="row" style="height: 70px"></div>
     </div>
 </template>
 
