@@ -16,11 +16,10 @@ const store = new Vuex.Store({
         // 当前正在编辑的国家的abbr
         abbrInputEditing: null,
         /**
-         * todo
-         * @type {{abbr, amount}}
+         * 以 listAbbr[0] 作为标准单位，记录其数据
+         * @type {{amount}}
          */
         baseCurrency: {
-            abbrIndex: 0,
             amount: 1000
         },
 
@@ -225,9 +224,12 @@ const store = new Vuex.Store({
             Vue.set(listAbbr, indexClicked, listAbbr[0]);
             Vue.set(listAbbr, 0, tmp);
         },
-        updateAmount({baseCurrency, listAbbr}, {amount, abbr}) {
-            baseCurrency.amount = amount;
-            baseCurrency.abbrIndex = listAbbr.indexOf(abbr);
+        updateAmount({baseCurrency, listAbbr, table}, {amount, abbr}) {
+            baseCurrency.amount = convertByRate({
+                fromRate: table[abbr]['rate'],
+                toRate: table[listAbbr[0]]['rate'],
+                amount
+            });
         },
         toggleEditing(state, {abbr}) {
             // 如果传值为空，退出编辑
@@ -258,21 +260,16 @@ const store = new Vuex.Store({
 
             const index = listAbbr.indexOf(abbr);
 
-            // 如果删除的是当前作为基准的货币
-            // 等价转换到当前第一行的货币
+            // 如果删除的是当前第一行
+            // 等价转换到当前第二行的货币
             // 确保显示的数字不变
-            if (index === baseCurrency.abbrIndex) {
-                // 如果被删除的是第一行
-                const newIndex = index === 0 ? 1 : 0;
-
+            if (index === 0) {
                 // 转换一下
                 baseCurrency.amount = convertByRate({
-                    fromRate: table[listAbbr[baseCurrency.abbrIndex]]['rate'],
-                    toRate: table[listAbbr[newIndex]]['rate'],
+                    fromRate: table[listAbbr[0]]['rate'],
+                    toRate: table[listAbbr[1]]['rate'],
                     amount: baseCurrency.amount
                 });
-                // 不论第一行或者第二行被删了，新的基准还是第一行
-                baseCurrency.abbrIndex = 0;
             }
 
             // 删除元素
@@ -281,20 +278,7 @@ const store = new Vuex.Store({
     },
     actions: {},
     getters: {
-        getBaseCurrencyAbbr: ({listAbbr, baseCurrency}) => {
-            return listAbbr[baseCurrency.abbrIndex];
-        },
         convertTo: ({table}) => ({from, to, amount}) => {
-            if (!(from && to)) {
-                throw 'Invalid input: ' + from + ' ' + to + ' ' + amount + "\nType: " + typeof amount;
-            }
-
-            // 确保 amount 合理
-            amount = Math.abs(parseFloat(amount));
-            if (isNaN(amount)) {
-                amount = 0;
-            }
-
             if (from === to) {
                 return amount;
             }
@@ -317,7 +301,7 @@ const store = new Vuex.Store({
         // 仅用于显示
         getAmount: ({listAbbr, baseCurrency}, getter) => ({abbr}) => {
             return Math.round(getter.convertTo({
-                from: getter.getBaseCurrencyAbbr,
+                from: listAbbr[0],
                 to: abbr,
                 amount: baseCurrency.amount
             }) * 10) / 10;

@@ -1,6 +1,8 @@
 function convertByRate({fromRate, toRate, amount}) {
-    if (!(fromRate && toRate)) {
-        throw "Invalid Input: " + fromRate + " " + toRate;
+    // 确保 amount 合理
+    amount = Math.abs(parseFloat(amount));
+    if (isNaN(amount)) {
+        amount = 0;
     }
 
     // 一律先转成美元，再转成目标
