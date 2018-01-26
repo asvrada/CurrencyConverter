@@ -100,7 +100,9 @@
                 });
             },
             btnRemove: function () {
-                // todo
+                this.$store.commit('deleteAbbr', {
+                    abbr: this.abbr
+                });
             }
         },
         directives: {

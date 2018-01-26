@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import {convertByRate} from './helper';
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -8,7 +10,7 @@ const store = new Vuex.Store({
         STORAGE_KEY: 'jeff-currency-converter',
 
         // 是否进入了编辑模式（可以增删货币
-        isAppModeEdit: false,
+        isAppModeEdit: true,
         selections: [],
 
         // 当前正在编辑的国家的abbr
@@ -243,6 +245,35 @@ const store = new Vuex.Store({
 
             // 如果不同
             state.abbrInputEditing = abbr;
+        },
+        deleteAbbr({listAbbr, baseCurrency, table}, {abbr}) {
+            // 删除某一行，但保持所有数值不变
+
+            if (listAbbr.length <= 1) {
+                return;
+            }
+
+            const index = listAbbr.indexOf(abbr);
+
+            // 如果删除的是当前作为基准的货币
+            // 等价转换到当前第一行的货币
+            // 确保显示的数字不变
+            if (index === baseCurrency.abbrIndex) {
+                // 如果被删除的是第一行
+                const newIndex = index === 0 ? 1 : 0;
+
+                // 转换一下
+                baseCurrency.amount = convertByRate({
+                    fromRate: table[listAbbr[baseCurrency.abbrIndex]]['rate'],
+                    toRate: table[listAbbr[newIndex]]['rate'],
+                    amount: baseCurrency.amount
+                });
+                // 不论第一行或者第二行被删了，新的基准还是第一行
+                baseCurrency.abbrIndex = 0;
+            }
+
+            // 删除元素
+            listAbbr.splice(index, 1);
         }
     },
     actions: {},
@@ -265,11 +296,11 @@ const store = new Vuex.Store({
                 return amount;
             }
 
-            // 一律先转成美元，再转成目标
-            const rateFrom2USD = 1 / table[from]["rate"];
-            const rateUSD2To = table[to]["rate"];
-
-            return amount * rateFrom2USD * rateUSD2To;
+            return convertByRate({
+                fromRate: table[from]["rate"],
+                toRate: table[to]["rate"],
+                amount
+            });
         },
         getCurrency: ({table}, getter) => ({abbr}) => {
             return {
