@@ -235,7 +235,7 @@ const store = new Vuex.Store({
             !tableRate || (state.table = tableRate);
             !timestamp || (state.timestamp = timestamp);
 
-            state.dataReady = true;
+            state.dataReady = !!tableRate;
         },
         addSelected({listAbbr}, {selected}) {
             selected.forEach((each) => {
@@ -323,7 +323,7 @@ const store = new Vuex.Store({
             }
 
             // 1000mill * 60sec * 60min * 24hr = 86400000
-            if (!context.state.table || (Date.now() - context.state.timestamp) > 86400000) {
+            if (!context.state.dataReady || (Date.now() - context.state.timestamp) > 86400000) {
                 // 没有table 或者 过期
                 console.log("Updating rate...");
 
