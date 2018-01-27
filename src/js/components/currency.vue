@@ -64,7 +64,10 @@
                     abbr: this.abbr
                 });
             },
-            ...mapState(["abbrInputEditing", "isAppModeEdit"])
+            ...mapState([
+                "abbrInputEditing",
+                "isAppModeEdit",
+            ])
         },
         methods: {
             abbrClicked: function () {
