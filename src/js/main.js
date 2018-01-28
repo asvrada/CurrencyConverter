@@ -9,8 +9,10 @@ const app = new Vue({
     store,
     render: h => h(App),
     created: function () {
+        // 创建时载入
         store.dispatch('load');
 
+        // 退出时保存
         window.onbeforeunload = function () {
             store.dispatch('save');
         };

@@ -119,5 +119,21 @@
 </script>
 
 <style scoped lang="scss">
+    input {
+        font-size: 1.6em;
+    }
+
+    .abbrNation {
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+
+    .table-amount {
+        font-size: 1.6em;
+    }
+
+    .table-money-unit {
+        font-weight: lighter;
+    }
 
 </style>

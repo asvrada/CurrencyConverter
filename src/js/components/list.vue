@@ -28,6 +28,13 @@
     };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    #tableView {
+        line-height: 2;
+        font-size: 1.3em;
 
+        .table-row:first-child {
+            background: #ffcdd2;
+        }
+    }
 </style>
