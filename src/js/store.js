@@ -9,7 +9,6 @@ const store = new Vuex.Store({
     state: {
         // localStorage
         STORAGE_KEY: 'jeff-currency-converter',
-        dataReady: false,
         willSave: true,
 
         // 是否进入了编辑模式（可以增删货币
@@ -403,8 +402,6 @@ const store = new Vuex.Store({
             !listAbbr || (state.listAbbr = listAbbr);
             !tableRate || (state.table = tableRate);
             !timestamp || (state.timestamp = timestamp);
-
-            state.dataReady = !!tableRate;
         },
         addSelected({listAbbr}, {selected}) {
             selected.forEach((each) => {
@@ -489,12 +486,14 @@ const store = new Vuex.Store({
 
             if (storage) {
                 context.commit('load', storage);
-                console.log("Loaded from local");
+                console.log("Loaded from localStorage");
+            } else {
+                console.log("Loaded from default");
             }
 
             // 1000mill * 60sec * 60min * 24hr = 86400000
-            if (!context.state.dataReady || (Date.now() - context.state.timestamp) > 86400000) {
-                // 没有ready 或者 过期
+            if ((Date.now() - context.state.timestamp) > 86400000) {
+                // 数据过期
                 console.log("Updating rate...");
 
                 updateRateFromAPI((data) => {
