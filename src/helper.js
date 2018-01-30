@@ -16,6 +16,7 @@ function convertByRate({fromRate, toRate, amount}) {
 function updateRateFromAPI(callback) {
     const accessKey = '28c3838ae4ee996dc7df28181ff3c7d3';
     const URL_API = 'http://apilayer.net/api/live?access_key=' + accessKey;
+    // const URL_API = 'https://ss.lingdra.com/api/rate';
 
     axios.get(URL_API)
         .then((response) => {

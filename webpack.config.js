@@ -5,7 +5,7 @@ const ROOT_PATH = path.resolve(__dirname);
 const DIST_PATH = path.resolve(ROOT_PATH, './dist');
 
 module.exports = {
-    entry: path.resolve(ROOT_PATH, './src/js/main.js'),
+    entry: path.resolve(ROOT_PATH, './src/main.js'),
     output: {
         path: DIST_PATH,
         publicPath: '/dist/',
@@ -15,9 +15,9 @@ module.exports = {
         // require时省略的扩展名，如：require('module') 不需要module.js
         extensions: ['.js', '.vue'],
         alias: {
-            components: path.join(ROOT_PATH, './src/js/components'),
-            'vue$': 'vue/dist/vue.esm.js',
-            sass: path.join(ROOT_PATH, './src/sass'),
+            components: path.join(ROOT_PATH, './src/components'),
+            // 'vue$': 'vue/dist/vue.esm.js',
+            // sass: path.join(ROOT_PATH, './src/sass'),
         }
     },
     module: {
