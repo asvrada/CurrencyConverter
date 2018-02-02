@@ -1,7 +1,10 @@
 <template>
     <div class="table-row row" v-show="isAppModeEdit">
         <div class="col s8">
-            <v-select multiple :value.sync="selected" :options="getFilteredSelectList()">
+            <v-select multiple
+            :close-on-select="false"
+            :value.sync="selected"
+            :options="getFilteredSelectList()">
             </v-select>
         </div>
         <div class="col s2">
