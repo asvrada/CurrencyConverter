@@ -1,5 +1,5 @@
 const path = require('path');
-var webpack = require('webpack');
+const webpack = require('webpack');
 
 const ROOT_PATH = path.resolve(__dirname);
 const DIST_PATH = path.resolve(ROOT_PATH, './dist');
