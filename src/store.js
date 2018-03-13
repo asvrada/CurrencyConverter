@@ -67,11 +67,9 @@ const store = new Vuex.Store({
             !timestamp || (state.timestamp = timestamp);
         },
         addSelected({listAbbr}, {selected}) {
-            selected.forEach((each) => {
-                if (-1 === listAbbr.indexOf(each['value'])) {
-                    listAbbr.push(each['value']);
-                }
-            });
+            if (-1 === listAbbr.indexOf(selected)) {
+                listAbbr.push(selected);
+            }
         },
         changeTopRow({listAbbr}, {abbr}) {
             if (abbr === listAbbr[0]) {
@@ -81,10 +79,6 @@ const store = new Vuex.Store({
             // number, index
             const indexClicked = listAbbr.indexOf(abbr);
             const tmp = listAbbr[indexClicked];
-
-            // 取出点击的项目，插入头部
-            // listAbbr.splice(indexClicked, 1);
-            // listAbbr.unshift(tmp);
 
             // 交换头部
             Vue.set(listAbbr, indexClicked, listAbbr[0]);
@@ -239,7 +233,7 @@ const store = new Vuex.Store({
             }
 
             return ret.sort(function (a, b) {
-                return a["name"] < b["name"] ? -1 : 1;
+                return a["label"] < b["label"] ? -1 : 1;
             });
         }
     }

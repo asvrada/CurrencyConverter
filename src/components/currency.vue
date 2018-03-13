@@ -2,7 +2,7 @@
     <div>
         <!--Left Part-->
         <div class="table-cell-left col"
-             :class="{s11: isAppModeEdit, s12: !isAppModeEdit}">
+             :class="{s10: isAppModeEdit, s12: !isAppModeEdit}">
             <!--Row 1-->
             <!--Image and Abbr. of Currency-->
             <div class="table-cell-name col s4" @click="abbrClicked()">
@@ -19,12 +19,12 @@
                 </span>
                     <input class="table-input col s12 right-align"
                            type="number"
+                           ref="input"
                            v-show="abbrInputEditing && abbr === abbrInputEditing"
-                           v-bind:id="'input-' + abbr"
                            v-model="amountEditing"
-                           v-input-focus="abbrInputEditing === abbr"
                            @blur="toggleEditing(false)"
-                           @keyup.enter="toggleEditing(false)">
+                           @keyup.enter="toggleEditing(false)"
+                           @keyup.esc="toggleEditing(false)">
                 </div>
             </div>
             <!--Row 2-->
@@ -34,10 +34,17 @@
         </div>
 
         <!--Right Part-->
-        <div class="table-cell-right col s1"
+        <div class="col s2"
              v-show="isAppModeEdit"
-             @click="btnRemove()">
-            <a href="#">X</a>
+        >
+            <div class="row edit-btn"
+                 @click="btnRemove()">
+                <i class="fas fa-trash"></i>
+            </div>
+
+            <div class="row handle edit-btn">
+                <i class="fas fa-bars"></i>
+            </div>
         </div>
     </div>
 </template>
@@ -67,6 +74,7 @@
             ...mapState([
                 "abbrInputEditing",
                 "isAppModeEdit",
+                "listAbbr"
             ])
         },
         methods: {
@@ -84,10 +92,21 @@
                     return;
                 }
 
-                if (this.abbrInputEditing !== this.abbr) {
+                // todo: 顺序有问题
+                // 更新编辑状态
+                this.$store.commit("toggleEditing", {
+                    abbr: this.abbr
+                });
+
+                if (this.abbrInputEditing === this.abbr) {
                     // 如果开始编辑当前货币
                     // update input value
                     this.amountEditing = this.data.amount;
+
+                    // input focus
+                    // select
+                    const elm = this.$refs.input;
+                    elm.focus();
                 } else {
                     // 如果退出编辑当前货币
                     // 更新 store.state.amount
@@ -97,10 +116,6 @@
                     });
                 }
 
-                // 更新编辑状态
-                this.$store.commit("toggleEditing", {
-                    abbr: this.abbr
-                });
             },
             btnRemove: function () {
                 this.$store.commit('deleteAbbr', {
@@ -108,19 +123,27 @@
                 });
             }
         },
-        directives: {
-            "input-focus": function (el, binding) {
-                if (binding.value) {
-                    el.focus();
-                }
-            }
-        }
     };
 </script>
 
 <style scoped lang="scss">
+    $border-color: rgba(128, 128, 128, 0.1);
+
     input {
         font-size: 1.6em;
+    }
+
+    .edit-btn {
+        cursor: pointer;
+        margin: 0;
+        text-align: center;
+        padding: 0.28em 0;
+
+        border-left: $border-color 1px solid;
+
+        &:first-child {
+            border-bottom: $border-color 1px solid;
+        }
     }
 
     .abbrNation {
