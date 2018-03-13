@@ -82,10 +82,6 @@ const store = new Vuex.Store({
             const indexClicked = listAbbr.indexOf(abbr);
             const tmp = listAbbr[indexClicked];
 
-            // 取出点击的项目，插入头部
-            // listAbbr.splice(indexClicked, 1);
-            // listAbbr.unshift(tmp);
-
             // 交换头部
             Vue.set(listAbbr, indexClicked, listAbbr[0]);
             Vue.set(listAbbr, 0, tmp);

@@ -19,12 +19,12 @@
                 </span>
                     <input class="table-input col s12 right-align"
                            type="number"
+                           ref="input"
                            v-show="abbrInputEditing && abbr === abbrInputEditing"
-                           v-bind:id="'input-' + abbr"
                            v-model="amountEditing"
-                           v-input-focus="abbrInputEditing === abbr"
                            @blur="toggleEditing(false)"
-                           @keyup.enter="toggleEditing(false)">
+                           @keyup.enter="toggleEditing(false)"
+                           @keyup.esc="toggleEditing(false)">
                 </div>
             </div>
             <!--Row 2-->
@@ -88,6 +88,18 @@
                     // 如果开始编辑当前货币
                     // update input value
                     this.amountEditing = this.data.amount;
+
+                    // v-input-focus="abbrInputEditing === abbr"
+                    // input focus
+                    // select
+                    const that = this;
+                    setTimeout(function () {
+                        const elm = that.$refs.input;
+                        elm.focus();
+                        // Can't do because of limitation
+                        // elm.setSelectionRange(0, elm.value.length);
+                    }, 100)
+
                 } else {
                     // 如果退出编辑当前货币
                     // 更新 store.state.amount
@@ -108,13 +120,6 @@
                 });
             }
         },
-        directives: {
-            "input-focus": function (el, binding) {
-                if (binding.value) {
-                    el.focus();
-                }
-            }
-        }
     };
 </script>
 
