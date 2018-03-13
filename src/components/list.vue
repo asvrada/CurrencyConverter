@@ -4,7 +4,8 @@
                    v-model="array"
                    :options="{
                        'disabled': !isAppModeEdit,
-                       'handle': '.handle'
+                       'handle': '.handle',
+                       'animation': 250
                    }"
                    @start="drag=true" @end="drag=false"
         >
@@ -58,6 +59,10 @@
 
         .table-row:first-child {
             background: #ffcdd2;
+        }
+
+        .sortable-ghost {
+            opacity: 0;
         }
     }
 </style>

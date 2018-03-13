@@ -233,7 +233,7 @@ const store = new Vuex.Store({
             }
 
             return ret.sort(function (a, b) {
-                return a["name"] < b["name"] ? -1 : 1;
+                return a["label"] < b["label"] ? -1 : 1;
             });
         }
     }
