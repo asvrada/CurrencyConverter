@@ -2,7 +2,7 @@
     <div>
         <!--Left Part-->
         <div class="table-cell-left col"
-             :class="{s11: isAppModeEdit, s12: !isAppModeEdit}">
+             :class="{s10: isAppModeEdit, s12: !isAppModeEdit}">
             <!--Row 1-->
             <!--Image and Abbr. of Currency-->
             <div class="table-cell-name col s4" @click="abbrClicked()">
@@ -34,10 +34,17 @@
         </div>
 
         <!--Right Part-->
-        <div class="table-cell-right col s1"
+        <div class="col s2"
              v-show="isAppModeEdit"
-             @click="btnRemove()">
-            <a href="#">X</a>
+        >
+            <div class="row edit-btn"
+                 @click="btnRemove()">
+                <i class="fas fa-trash"></i>
+            </div>
+
+            <div class="row handle edit-btn">
+                <i class="fas fa-bars"></i>
+            </div>
         </div>
     </div>
 </template>
@@ -120,8 +127,23 @@
 </script>
 
 <style scoped lang="scss">
+    $border-color: rgba(128, 128, 128, 0.1);
+
     input {
         font-size: 1.6em;
+    }
+
+    .edit-btn {
+        cursor: pointer;
+        margin: 0;
+        text-align: center;
+        padding: 0.28em 0;
+
+        border-left: $border-color 1px solid;
+
+        &:first-child {
+            border-bottom: $border-color 1px solid;
+        }
     }
 
     .abbrNation {

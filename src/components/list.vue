@@ -2,7 +2,10 @@
     <div class="container" id="list">
         <draggable id="tableView"
                    v-model="array"
-                   :options="{'disabled':!isAppModeEdit}"
+                   :options="{
+                       'disabled': !isAppModeEdit,
+                       'handle': '.handle'
+                   }"
                    @start="drag=true" @end="drag=false"
         >
             <div class="table-row card row"
