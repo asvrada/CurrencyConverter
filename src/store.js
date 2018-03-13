@@ -67,11 +67,9 @@ const store = new Vuex.Store({
             !timestamp || (state.timestamp = timestamp);
         },
         addSelected({listAbbr}, {selected}) {
-            selected.forEach((each) => {
-                if (-1 === listAbbr.indexOf(each['value'])) {
-                    listAbbr.push(each['value']);
-                }
-            });
+            if (-1 === listAbbr.indexOf(selected)) {
+                listAbbr.push(selected);
+            }
         },
         changeTopRow({listAbbr}, {abbr}) {
             if (abbr === listAbbr[0]) {
