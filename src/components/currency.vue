@@ -67,6 +67,7 @@
             ...mapState([
                 "abbrInputEditing",
                 "isAppModeEdit",
+                "listAbbr"
             ])
         },
         methods: {
@@ -84,22 +85,21 @@
                     return;
                 }
 
-                if (this.abbrInputEditing !== this.abbr) {
+                // todo: 顺序有问题
+                // 更新编辑状态
+                this.$store.commit("toggleEditing", {
+                    abbr: this.abbr
+                });
+
+                if (this.abbrInputEditing === this.abbr) {
                     // 如果开始编辑当前货币
                     // update input value
                     this.amountEditing = this.data.amount;
 
-                    // v-input-focus="abbrInputEditing === abbr"
                     // input focus
                     // select
-                    const that = this;
-                    setTimeout(function () {
-                        const elm = that.$refs.input;
-                        elm.focus();
-                        // Can't do because of limitation
-                        // elm.setSelectionRange(0, elm.value.length);
-                    }, 100)
-
+                    const elm = this.$refs.input;
+                    elm.focus();
                 } else {
                     // 如果退出编辑当前货币
                     // 更新 store.state.amount
@@ -109,10 +109,6 @@
                     });
                 }
 
-                // 更新编辑状态
-                this.$store.commit("toggleEditing", {
-                    abbr: this.abbr
-                });
             },
             btnRemove: function () {
                 this.$store.commit('deleteAbbr', {

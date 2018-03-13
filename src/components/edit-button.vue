@@ -20,5 +20,7 @@
 </script>
 
 <style scoped>
-
+    i {
+        user-select: none;
+    }
 </style>

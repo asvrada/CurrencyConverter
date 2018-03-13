@@ -1,30 +1,50 @@
 <template>
     <div class="container" id="list">
-        <div id="tableView" class="">
+        <draggable id="tableView"
+                   v-model="array"
+                   :options="{'disabled':!isAppModeEdit}"
+                   @start="drag=true" @end="drag=false"
+        >
             <div class="table-row card row"
-                 v-for="each in listAbbr"
+                 v-for="each in array"
                  :key="each">
                 <currency :abbr="each"></currency>
             </div>
-
-            <add-new></add-new>
-        </div>
+        </draggable>
+        <add-new></add-new>
     </div>
 </template>
 
 <script>
-    import {mapState} from 'vuex';
+    import {mapState, mapMutations} from 'vuex';
+    import draggable from 'vuedraggable';
 
     import Currency from 'components/currency';
     import AddNew from 'components/add-new';
 
     export default {
         name: "list",
-        components: {Currency, AddNew},
-        computed: mapState([
-            'listAbbr'
+        components: {Currency, AddNew, draggable},
+        computed: {
+            ...mapState([
+                'listAbbr',
+                'isAppModeEdit'
+            ]),
+
+            array: {
+                get() {
+                    return this.listAbbr;
+                },
+                set(value) {
+                    this.load({
+                        listAbbr: value
+                    });
+                }
+            }
+        },
+        methods: mapMutations([
+            'load'
         ]),
-        methods: {},
     };
 </script>
 
