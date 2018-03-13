@@ -9,11 +9,14 @@
                    }"
                    @start="drag=true" @end="drag=false"
         >
-            <div class="table-row card row"
-                 v-for="each in array"
-                 :key="each">
-                <currency :abbr="each"></currency>
-            </div>
+            <transition-group name="currency">
+                <div class="table-row card row"
+                     v-for="each in array"
+                     :key="each">
+
+                    <currency :abbr="each"></currency>
+                </div>
+            </transition-group>
         </draggable>
         <add-new></add-new>
     </div>
@@ -56,6 +59,14 @@
     #tableView {
         line-height: 2;
         font-size: 1.3em;
+
+        .currency-enter-active, .currency-leave-active {
+            transition: opacity .5s;
+        }
+
+        .currency-enter, .currency-leave-to {
+            opacity: 0;
+        }
 
         .table-row:first-child {
             background: #ffcdd2;
