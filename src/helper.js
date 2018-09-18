@@ -41,7 +41,7 @@ function updateRateFromAPI(callback) {
         })
         .catch((error) => {
             console.log(">>> Updating rate failed \n" + error);
-            alert("请信任加载不安全脚本\n本应用需要发送HTTP（而不是HTTPS）请求来获取汇率");
+            alert("Please enable sending HTTP request in the browser's page specific setting\nThis app will make a HTTP request to update exchange rate.");
         });
 }
 
