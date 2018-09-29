@@ -9,9 +9,9 @@
 </template>
 
 <script>
-    import Banner from 'components/banner';
-    import List from 'components/list';
-    import EditButton from 'components/edit-button';
+    import Banner from './components/banner';
+    import List from './components/list';
+    import EditButton from './components/edit-button';
 
     export default {
         components: {Banner, List, EditButton},

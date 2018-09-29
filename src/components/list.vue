@@ -26,8 +26,8 @@
     import {mapState, mapMutations} from 'vuex';
     import draggable from 'vuedraggable';
 
-    import Currency from 'components/currency';
-    import AddNew from 'components/add-new';
+    import Currency from './currency';
+    import AddNew from './add-new';
 
     export default {
         name: "list",

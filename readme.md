@@ -2,9 +2,27 @@
 
 [View Online](https://thissentenceiswrong.github.io/vue-currency-converter/)
 
-### To run on local
-First clone to your local, then run the following commands:  
+## Project setup
+```
+yarn install
+```
 
-    yarn install
-    yarn run [dev|build]
-    
+### Compiles and hot-reloads for development
+```
+yarn run serve
+```
+
+### Compiles and minifies for production
+```
+yarn run build
+```
+
+### Run your tests
+```
+yarn run test
+```
+
+### Lints and fixes files
+```
+yarn run lint
+```

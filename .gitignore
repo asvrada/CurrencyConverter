@@ -1,6 +1,8 @@
 .DS_Store
-.idea/
-node_modules/
-dist/
-gh-pages/
-yarn-error.log
+.idea
+
+dist
+node_modules
+gh-pages
+
+yarn.lock
