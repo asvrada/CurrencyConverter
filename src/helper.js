@@ -1,5 +1,3 @@
-import axios from "axios/index";
-
 function convertByRate({fromRate, toRate, amount}) {
     // 一律先转成美元，再转成目标
     const rateFrom2USD = 1 / fromRate;
@@ -14,35 +12,31 @@ function convertByRate({fromRate, toRate, amount}) {
  * 所以不能用返回值的形式
  */
 function updateRateFromAPI(callback) {
-    const accessKey = '28c3838ae4ee996dc7df28181ff3c7d3';
-    const URL_API = 'http://apilayer.net/api/live?access_key=' + accessKey;
-    // const URL_API = 'https://ss.lingdra.com/api/rate';
+    const URL_API = "https://my-backend-application.herokuapp.com/currency";
 
-    axios.get(URL_API)
-        .then((response) => {
-            let data = response["data"];
+    fetch(URL_API).then((response) => {
+        return response.text();
+    }).then((data) => {
+        data = JSON.parse(data);
+        data = data["quotes"];
 
-            data = data["quotes"];
+        const table = {};
+        table["USD"] = 1;
 
-            const table = {};
-
-            table["USD"] = 1;
-
-            for (let each in data) {
-                if (!data.hasOwnProperty(each)) {
-                    continue;
-                }
-
-                const abbr = each.substring(3);
-                table[abbr] = data[each];
+        for (let each in data) {
+            if (!data.hasOwnProperty(each)) {
+                continue;
             }
 
-            callback(table);
-        })
-        .catch((error) => {
-            console.log(">>> Updating rate failed \n" + error);
-            alert("Please enable sending HTTP request in the browser's page specific setting\nThis app will make a HTTP request to update exchange rate.");
-        });
+            const abbr = each.substring(3);
+            table[abbr] = data[each];
+        }
+
+        callback(table);
+    }).catch((error) => {
+        console.log(">>> Updating rate failed \n" + error);
+        alert("Please enable sending HTTP request in the browser's page specific setting\nThis app will make a HTTP request to update exchange rate.");
+    });
 }
 
 export {
