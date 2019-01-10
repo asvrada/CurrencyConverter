@@ -7,6 +7,9 @@ import {abbrNations, rates} from './data.js';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
+    ///////////
+    // STATE //
+    ///////////
     state: {
         // localStorage
         STORAGE_KEY: 'jeff-currency-converter',
@@ -59,6 +62,9 @@ const store = new Vuex.Store({
          */
         timestamp: 1517073986844,
     },
+    ///////////////
+    // MUTATIONS //
+    ///////////////
     mutations: {
         load(state, {amount, listAbbr, tableRate, timestamp}) {
             !amount || (state.baseCurrency.amount = amount);
@@ -137,6 +143,9 @@ const store = new Vuex.Store({
             listAbbr.splice(index, 1);
         }
     },
+    /////////////
+    // ACTIONS //
+    /////////////
     actions: {
         load(context) {
             const storage = JSON.parse(localStorage.getItem(context.state.STORAGE_KEY));
@@ -178,6 +187,9 @@ const store = new Vuex.Store({
             console.log("Saved to local");
         },
     },
+    /////////////
+    // GETTERS //
+    /////////////
     getters: {
         convertTo: ({table}) => ({from, to, amount}) => {
             // 确保 amount 合理

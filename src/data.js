@@ -3,6 +3,9 @@ export {
     rates
 };
 
+/* 
+A dict that contains (abbreviation of a currency for the nation, name of nation) pairs
+*/
 const abbrNations = {
     "AED": "United Arab Emirates Dirham",
     "AFN": "Afghan Afghani",
@@ -174,6 +177,9 @@ const abbrNations = {
     "ZWL": "Zimbabwean Dollar"
 };
 
+/*
+A dict that contains (abbr of some currency, default exchange rate from USD to this currency) pairs
+*/
 const rates = {
     "USD": 1,
     "AED": 3.672804,

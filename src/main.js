@@ -9,10 +9,10 @@ const app = new Vue({
     store,
     render: h => h(App),
     created: function () {
-        // 创建时载入
+        // load exchange rate from localStorage
         store.dispatch('load');
 
-        // 退出时保存
+        // save the exchange rate to localStorage when exit
         window.onbeforeunload = function () {
             store.dispatch('save');
         };
