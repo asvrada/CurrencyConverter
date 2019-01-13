@@ -40,4 +40,3 @@ yarn run build
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)
-
