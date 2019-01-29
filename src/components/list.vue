@@ -29,6 +29,9 @@
     import Currency from './currency';
     import AddNew from './add-new';
 
+    /**
+     * Main body of the page, list of different currencies
+     */
     export default {
         name: "list",
         components: {Currency, AddNew, draggable},

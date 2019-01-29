@@ -14,6 +14,9 @@
 
     import {mapState, mapGetters, mapMutations} from "vuex";
 
+    /**
+     * The drop down list at the bottom of page when on edit mode
+     */
     export default {
         name: "add-new",
         components: {vSelect},

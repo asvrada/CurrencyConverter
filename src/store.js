@@ -11,53 +11,52 @@ const store = new Vuex.Store({
     // STATE //
     ///////////
     state: {
-        // localStorage
+        // key for localStorage
         STORAGE_KEY: 'jeff-currency-converter',
         willSave: true,
 
-        // 是否进入了编辑模式（可以增删货币
+        // true if edit mode is on
         isAppModeEdit: false,
 
         // 当前正在编辑的国家的abbr
         abbrInputEditing: null,
 
         /**
-         * 国家缩写对应全称
+         * a dict of abbreviation of currency to the full name of the nation
          */
         abbr2NameEnglish: abbrNations,
 
         /**
-         * 需要保存
+         * The amount of the base currency (the first one in the list with red background)
+         * This will be stored in localStorage
          *
-         * 以 listAbbr[0] 作为标准单位，记录其数据
-         * @type {{amount}}
+         * @type {{int}}
          */
         baseCurrency: {
             amount: 1000
         },
 
         /**
-         * 需要保存
+         * List of currencies on display
          *
-         * 显示的国家
-         * 每一项为国家三个英文字母的缩写
+         * This will be stored in localStorage
          */
         listAbbr: ['USD', 'CNY', 'EUR', 'JPY', 'HKD', 'KRW', 'AUD', 'GBP'],
 
         /**
-         * 需要保存
+         * Exchange rate of all currency to USD
          *
-         * 从网络或者本地缓存获取汇率
-         * 其中的rate为相对美元的汇率
-         * 即 rate = 1美元对应该币种数量
-         * @type {{string:rate}}
+         * This will be stored in localStorage
+         *
+         * @type {{string}, {number}}
          */
         table: rates,
 
         /**
-         * 需要保存
+         * The timestamp of latest exchange rate
+         * Obtained by `new Date()`
+         * This will be stored in localStorage
          *
-         * 格式与 new Date() 返回值相同
          * @type {number}
          */
         timestamp: 1517073986844,
@@ -86,7 +85,7 @@ const store = new Vuex.Store({
             const indexClicked = listAbbr.indexOf(abbr);
             const tmp = listAbbr[indexClicked];
 
-            // 交换头部
+            // Move to top
             Vue.set(listAbbr, indexClicked, listAbbr[0]);
             Vue.set(listAbbr, 0, tmp);
         },
@@ -98,28 +97,27 @@ const store = new Vuex.Store({
             });
         },
         toggleEditing(state, {abbr}) {
-            // 如果传值为空，退出编辑
             if (!abbr) {
                 state.abbrInputEditing = null;
                 return;
             }
 
-            // 如果与当前编辑相同
-            // 切换编辑状态 (abbr|null)
+            // If we are editing the same currency
+            // Toggle edit mode
             if (abbr === state.abbrInputEditing) {
                 state.abbrInputEditing = state.abbrInputEditing ? null : abbr;
                 return;
             }
 
-            // 如果不同
+            // Now editing other currency
+            // Stay in edit mode, but change the subject
             state.abbrInputEditing = abbr;
         },
         toggleAppModeEditing(state) {
             state.isAppModeEdit = !state.isAppModeEdit;
         },
+        // Delete one item from list
         deleteAbbr({listAbbr, baseCurrency, table}, {abbr}) {
-            // 删除某一行，但保持所有数值不变
-
             if (listAbbr.length <= 1) {
                 alert("Cannot delete the last element!");
                 return;
@@ -127,11 +125,8 @@ const store = new Vuex.Store({
 
             const index = listAbbr.indexOf(abbr);
 
-            // 如果删除的是当前第一行
-            // 等价转换到当前第二行的货币
-            // 确保显示的数字不变
+            // if deleting first element, change base currency to make sure the amount stay the same
             if (index === 0) {
-                // 转换一下
                 baseCurrency.amount = convertByRate({
                     fromRate: table[listAbbr[0]],
                     toRate: table[listAbbr[1]],
@@ -139,7 +134,7 @@ const store = new Vuex.Store({
                 });
             }
 
-            // 删除元素
+            // delete the item at index
             listAbbr.splice(index, 1);
         }
     },
@@ -159,7 +154,7 @@ const store = new Vuex.Store({
 
             // 1000mill * 60sec * 60min * 24hr = 86400000
             if ((Date.now() - context.state.timestamp) > 86400000) {
-                // 数据过期
+                // update exchange rate if it expires
                 console.log("Updating rate...");
 
                 updateRateFromAPI((data) => {
@@ -172,6 +167,7 @@ const store = new Vuex.Store({
                 });
             }
         },
+        // save to localStorage
         save({state}) {
             if (!state.willSave) {
                 return;
@@ -192,7 +188,6 @@ const store = new Vuex.Store({
     /////////////
     getters: {
         convertTo: ({table}) => ({from, to, amount}) => {
-            // 确保 amount 合理
             amount = Math.abs(parseFloat(amount));
             if (isNaN(amount)) {
                 amount = 0;
@@ -218,7 +213,7 @@ const store = new Vuex.Store({
                 })
             };
         },
-        // 仅用于显示
+        // get the amount to be displayed
         getAmount: ({listAbbr, baseCurrency}, getter) => ({abbr}) => {
             return Math.round(getter.convertTo({
                 from: listAbbr[0],
@@ -227,8 +222,8 @@ const store = new Vuex.Store({
             }) * 10) / 10;
         },
         /**
-         * 返回过滤过的列表
-         * @returns {[{abbr, name}]}
+         * Generate the content for drop down list
+         *
          */
         getFilteredSelectList: ({listAbbr, abbr2NameEnglish}) => {
             let ret = [];

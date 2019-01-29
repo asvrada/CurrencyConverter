@@ -9,6 +9,9 @@
 <script>
     import {mapMutations} from 'vuex';
 
+    /**
+     * The toggle edit mode button
+     */
     export default {
         name: "edit-button",
         methods: {

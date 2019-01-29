@@ -54,7 +54,7 @@
 
     export default {
         name: "currency",
-        // 获取父组件信息
+        // the abbreviation of currency to display for this component
         props: ["abbr"],
         data: function () {
             return {
@@ -85,21 +85,20 @@
                 });
             },
             toggleEditing: function (startEditing) {
-                // 判断无效toggle
-                // 用于解决 @enter 和 @blur 两次触发该函数
+                // debounce
+                // if not editing this component and user is not exiting editing
+                // do nothing
                 if (this.abbrInputEditing !== this.abbr && !startEditing) {
-                    // 不是编辑当前 && 退出编辑
                     return;
                 }
 
-                // todo: 顺序有问题
-                // 更新编辑状态
+                // update the currency being edited to this one
                 this.$store.commit("toggleEditing", {
                     abbr: this.abbr
                 });
 
                 if (this.abbrInputEditing === this.abbr) {
-                    // 如果开始编辑当前货币
+                    // start editing this component
                     // update input value
                     this.amountEditing = this.data.amount;
 
@@ -108,8 +107,8 @@
                     const elm = this.$refs.input;
                     elm.focus();
                 } else {
-                    // 如果退出编辑当前货币
-                    // 更新 store.state.amount
+                    // exit editing
+                    // update currency amount
                     this.$store.commit("updateAmount", {
                         amount: this.amountEditing,
                         abbr: this.abbr
