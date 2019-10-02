@@ -147,23 +147,16 @@ const store = new Vuex.Store({
 
             if (storage) {
                 context.commit('load', storage);
-                console.log("Loaded from localStorage");
-            } else {
-                console.log("Loaded from default");
             }
 
             // 1000mill * 60sec * 60min * 24hr = 86400000
             if ((Date.now() - context.state.timestamp) > 86400000) {
                 // update exchange rate if it expires
-                console.log("Updating rate...");
-
                 updateRateFromAPI((data) => {
                     context.commit('load', {
                         tableRate: data,
                         timestamp: Date.now()
                     });
-
-                    console.log("Update complete");
                 });
             }
         },
@@ -179,8 +172,6 @@ const store = new Vuex.Store({
                 tableRate: state.table,
                 timestamp: state.timestamp
             }));
-
-            console.log("Saved to local");
         },
     },
     /////////////
