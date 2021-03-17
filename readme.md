@@ -2,7 +2,7 @@
 
 A online currency converter that works. Allow you to compare multiple currencies with ease.
 
-[Demo](https://asvrada.github.io/vue-currency-converter/)
+[Demo](https://asvrada.github.io/CurrencyConverter/)
 
 ## Requirements 
 
